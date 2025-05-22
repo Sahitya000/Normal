@@ -5,23 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rocket Update Dialog</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-
     .dialog {
       width: 320px;
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       background: white;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     .top {
@@ -42,7 +32,9 @@
 
     .rocket {
       width: 60px;
-      display: block;
+      height: 100px;
+       background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M12 2.5c0 0 4.5 2 4.5 10.5c0 2.5-2 4.5-4.5 4.5s-4.5-2-4.5-4.5C7.5 4.5 12 2.5 12 2.5M12 6l-2 2c0 3 1 5 1 5l1 1l1-1c0 0 1-2 1-5l-2-2z"/></svg>') no-repeat center;
+      background-size: contain;
       margin: 0 auto;
     }
 
@@ -53,111 +45,54 @@
       100% { top: -80px; opacity: 0; }
     }
 
-    /* Centered Flame Effect */
-    .flame-container {
-      position: absolute;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 30px;
-      height: 60px;
-      z-index: 1;
-    }
-    
     .flame {
       position: absolute;
+      top: 90px;
       left: 50%;
       transform: translateX(-50%);
-      width: 100%;
-      height: 100%;
+      width: 20px;
+      height: 40px;
       background: linear-gradient(to bottom, 
         rgba(255, 255, 255, 0.8) 0%, 
-        rgba(255, 200, 0, 0.9) 10%, 
-        rgba(255, 100, 0, 0.8) 30%, 
-        rgba(200, 30, 0, 0.6) 50%, 
-        rgba(100, 10, 0, 0.3) 70%, 
-        transparent 100%);
+        rgba(255, 200, 0, 0.9) 30%, 
+        rgba(255, 100, 0, 0.8) 70%);
       border-radius: 50% 50% 20% 20%;
-      filter: blur(5px);
-      animation: 
-        flameFlicker 0.3s ease-in-out infinite alternate,
-        flamePulse 1s ease-in-out infinite;
-      transform-origin: center top;
-    }
-    
-    .flame::before {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      height: 20px;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-      filter: blur(10px);
-    }
-    
-    .flame::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      height: 10px;
-      background: rgba(180, 80, 0, 0.4);
-      border-radius: 50%;
-      filter: blur(5px);
+      filter: blur(4px);
+      animation: flameFlicker 0.3s infinite alternate;
     }
 
     @keyframes flameFlicker {
-      0%, 100% { transform: translateX(-50%) scale(1, 1); }
-      25% { transform: translateX(-50%) scale(0.9, 1.1); }
-      50% { transform: translateX(-50%) scale(1.1, 0.9); }
-      75% { transform: translateX(-50%) scale(0.95, 1.05); }
-    }
-    
-    @keyframes flamePulse {
-      0%, 100% { height: 60px; opacity: 0.9; }
-      50% { height: 70px; opacity: 1; }
+      0% { height: 40px; opacity: 0.9; }
+      100% { height: 50px; opacity: 1; }
     }
 
-    /* Centered Smoke Effect */
     .smoke-clouds {
       position: absolute;
-      top: 80px;
+      top: 100px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 0;
-      width: 100px;
-      height: 100px;
     }
 
     .cloud {
       position: absolute;
-      left: 50%;
-      background: linear-gradient(to bottom, 
-        rgba(200, 200, 200, 0.8) 0%, 
-        rgba(150, 150, 150, 0.4) 100%);
+      width: 20px;
+      height: 20px;
+      background: rgba(100, 100, 100, 0.4);
       border-radius: 50%;
-      filter: blur(8px);
-      animation: cloudDrift 3s ease-out infinite;
-      opacity: 0;
+      filter: blur(5px);
+      animation: cloudDrop 2s ease-in infinite;
     }
 
-    @keyframes cloudDrift {
-      0% {
-        transform: translateY(0) translateX(0) scale(0.8);
-        opacity: 0;
-      }
-      20% {
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateY(-80px) translateX(calc(var(--drift-x) * 10px)) scale(1.5);
-        opacity: 0;
-      }
+    .cloud:nth-child(1) { left: -15px; animation-delay: 0s; }
+    .cloud:nth-child(2) { left: 0px; animation-delay: 0.3s; }
+    .cloud:nth-child(3) { left: 15px; animation-delay: 0.6s; }
+    .cloud:nth-child(4) { left: -5px; animation-delay: 0.9s; }
+    .cloud:nth-child(5) { left: 10px; animation-delay: 1.2s; }
+
+    @keyframes cloudDrop {
+      0% { transform: translateY(0) scale(1); opacity: 0.5; }
+      100% { transform: translateY(50px) scale(1.5); opacity: 0; }
     }
 
     .top::after {
@@ -195,17 +130,25 @@
       color: #555;
       font-size: 14px;
     }
+
+    li {
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
   <div class="dialog">
     <div class="top">
       <div class="rocket-container">
-        <img class="rocket" src="assets/rocket.png" alt="Rocket" />
-        <div class="flame-container">
-          <div class="flame"></div>
+        <div class="rocket"></div>
+        <div class="flame"></div>
+        <div class="smoke-clouds">
+          <div class="cloud"></div>
+          <div class="cloud"></div>
+          <div class="cloud"></div>
+          <div class="cloud"></div>
+          <div class="cloud"></div>
         </div>
-        <div class="smoke-clouds" id="smoke-clouds"></div>
       </div>
     </div>
     <div class="content">
@@ -221,53 +164,5 @@
       </ol>
     </div>
   </div>
-
-  <script>
-    // Dynamic smoke cloud generation
-    document.addEventListener('DOMContentLoaded', function() {
-      const smokeClouds = document.getElementById('smoke-clouds');
-      const cloudCount = 12;
-      
-      // Generate smoke clouds with random properties
-      for (let i = 0; i < cloudCount; i++) {
-        const cloud = document.createElement('div');
-        cloud.className = 'cloud';
-        
-        // Random properties for each cloud
-        const size = 15 + Math.random() * 15;
-        const driftX = (Math.random() - 0.5) * 3;
-        const delay = Math.random() * 3;
-        const duration = 2 + Math.random() * 2;
-        
-        cloud.style.cssText = `
-          width: ${size}px;
-          height: ${size}px;
-          margin-left: ${(Math.random() - 0.5) * 40}px;
-          animation-delay: ${delay}s;
-          animation-duration: ${duration}s;
-          --drift-x: ${driftX};
-        `;
-        
-        smokeClouds.appendChild(cloud);
-      }
-      
-      // Make rocket animation responsive
-      function adjustRocketSize() {
-        const dialog = document.querySelector('.dialog');
-        const rocket = document.querySelector('.rocket');
-        const dialogWidth = dialog.offsetWidth;
-        
-        // Scale rocket proportionally to dialog width
-        const rocketSize = dialogWidth * 0.1875; // 60px at 320px width
-        rocket.style.width = `${rocketSize}px`;
-      }
-      
-      // Initial adjustment
-      adjustRocketSize();
-      
-      // Adjust on window resize
-      window.addEventListener('resize', adjustRocketSize);
-    });
-  </script>
 </body>
 </html>
